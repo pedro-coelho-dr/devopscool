@@ -1,0 +1,153 @@
+- Learn a Programming Language
+  - Python
+  - Go
+  - JavaScript / Node.js
+  - Ruby
+  - Rust
+- Operating System
+  - Windows
+  - Unix
+    - FreeBSD
+    - OpenBSD
+    - NetBSD
+  - Linux
+    - Ubuntu / Debian
+    - SUSE Linux
+    - RHEL / Derivatives
+- Terminal Knowledge
+  - Scripting
+    - Bash
+    - PowerShell
+  - Editors
+    - Vim / Nano / Emacs
+  - System Utilities
+    - Process Monitoring
+    - Performance Monitoring
+    - Networking Tools
+    - Text Manipulation
+- Version Control Systems
+  - Git
+  - VCS Hosting
+    - GitHub
+    - GitLab
+    - Bitbucket
+- Containers
+  - Docker
+  - LXC
+- What is and how to setup X?
+  - Forward Proxy
+  - Reverse Proxy
+  - Caching Server
+  - Firewall
+  - Load Balancer
+  - Web Server
+    - Nginx
+    - Caddy
+    - Tomcat
+    - Apache
+    - IIS
+- Networking & Protocols
+  - FTP / SFTP
+  - DNS
+  - HTTP
+  - HTTPS
+  - SSL / TLS
+  - SSH
+  - OSI Model
+  - Email Protocols
+    - White / Grey Listing
+    - SMTP
+    - IMAP
+    - POP3S
+    - DMARC
+    - SPF
+    - Domain Keys
+  - Cloud Providers
+    - AWS
+    - Azure
+    - Google Cloud
+    - Digital Ocean
+    - Alibaba Cloud
+    - Hetzner
+    - Contabo
+    - Heroku
+- Cloud Providers
+  - AWS
+  - Azure
+  - Google Cloud
+  - Digital Ocean
+  - Alibaba Cloud
+  - Hetzner
+  - Contabo
+  - Heroku
+- Serverless
+  - AWS Lambda
+  - Cloudflare
+  - Azure Functions
+  - Vercel
+  - Netlify
+  - GCP Functions
+- Provisioning
+  - AWS CDK
+  - CloudFormation
+  - Pulumi
+  - Terraform
+- Configuration Management
+  - Chef
+  - Ansible
+  - Salt
+  - Puppet
+- CI / CD Tools
+  - TeamCity
+  - Jenkins
+  - GitLab CI
+  - Circle CI
+  - Octopus Deploy
+  - GitHub Actions
+- Secret Management
+  - Sealed Secrets
+  - ESO
+  - Vault
+  - SOPs
+  - Cloud Specific Tools
+- Infrastructure Monitoring
+  - Prometheus
+  - Grafana
+  - Zabbix
+  - Datadog
+- Logs Management
+  - Papertrail
+  - Splunk
+  - Loki
+  - Elastic Stack
+  - Graylog
+- Container Orchestration
+  - GKE / EKS / AKS
+  - AWS ECS / Fargate
+  - Docker Swarm
+  - Kubernetes
+  - OpenShift
+- Observability
+  - Jaeger
+  - New Relic
+  - Datadog
+  - Prometheus
+  - OpenTelemetry
+  - Dynatrace
+- Artifact Management
+  - Nexus
+  - Artifactory
+  - Cloud Smith
+- GitOps
+  - ArgoCD
+  - FluxCD
+- Service Mesh
+  - Istio
+  - Consul
+  - Linkerd
+  - Envoy
+- Cloud Design Patterns
+  - Availability
+  - Data Management
+  - Design and Implementation
+  - Management and Monitoring
