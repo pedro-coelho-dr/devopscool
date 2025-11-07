@@ -63,6 +63,12 @@ Each node in the roadmap represents a specific subject area, and interacting wit
 - **State Management:** Uses localStorage to maintain current context.
 - **API Communication:** Handles requests to the backend for chat responses.
 
+### Style
+
+Fonts
+
+Color Palette
+
 
 ### Roadmap Structure
 
