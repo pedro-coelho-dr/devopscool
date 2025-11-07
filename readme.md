@@ -39,21 +39,32 @@ graph LR
 The frontend functions as an interactive study interface where the roadmap guides learning progression.  
 Each node in the roadmap represents a specific subject area, and interacting with it changes the assistant’s response context.
 
+### User Flow
+**Initialization**  
+1. User selects a topic from the roadmap.  
+2. Frontend saves the topic in `localStorage`.  
+3. Chat session is initialized with the backend.  
+
+**Interaction**
+1. User sends a message through the chat interface.  
+2. Frontend forwards the message to the backend.  
+3. Backend processes and returns a context-aware response.  
+4. Frontend displays the assistant’s reply.  
+
+**Continuation**
+1. User continues the conversation or changes topic.  
+2.  The loop repeats for dynamic learning.  
+3.  User can reset the chat to start fresh.  
+
+### Components
+
+- **Roadmap Tree:** Visual representation of topics as a tree structure.
+- **Chat Interface:** Area for user-assistant interaction.
+- **State Management:** Uses localStorage to maintain current context.
+- **API Communication:** Handles requests to the backend for chat responses.
+
+
 ### Roadmap Structure
 
 Refer to [roadmap_structure.md](./roadmap_structure.md)
-
-### 
-
-
-
-
-
-
-
-
-
-
-
-
 
