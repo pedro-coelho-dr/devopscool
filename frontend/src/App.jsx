@@ -1,37 +1,72 @@
 import "./styles/main.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RoadmapTree from "./components/RoadmapTree";
 import ChatWindow from "./components/ChatWindow";
+import { postChat } from "./utils/api";
+import { loadState, saveState, clearState } from "./utils/storage";
+import { getLastPair } from "./utils/chatLogic";
 
 export default function App() {
-  const [topicPath, setTopicPath] = useState([]); // stores path array
+  const [topicPath, setTopicPath] = useState([]);
   const [messages, setMessages] = useState([]);
 
-  // --- Select a topic from the roadmap
-  const handleSelectTopic = (path) => {
+  // === Load previous session on startup ===
+  useEffect(() => {
+    const { topicPath, messages } = loadState();
+    setTopicPath(topicPath);
+    setMessages(messages);
+  }, []);
+
+  // === Persist state in localStorage ===
+  useEffect(() => {
+    if (topicPath.length > 0) saveState(topicPath, messages);
+  }, [topicPath, messages]);
+
+  // === Handle topic selection ===
+  const handleSelectTopic = async (path) => {
+    const topicName = path[path.length - 1];
     setTopicPath(path);
-    setMessages([]); // reset chat on new topic
+    setMessages([]);
+    clearState();
+
+    try {
+      // First backend fetch: introduction for that topic
+      const data = await postChat(topicName, null, null);
+      setMessages([{ role: "assistant", content: data.reply }]);
+    } catch (err) {
+      console.error("Initial topic load failed:", err);
+      setMessages([{ role: "assistant", content: "⚠️ Could not load topic." }]);
+    }
   };
 
-  // --- Send message + mock assistant reply
-  const handleSend = (message) => {
-    setMessages((prev) => [...prev, { role: "user", content: message }]);
+  // === Handle user input send ===
+  const handleSend = async (message) => {
+    if (!topicPath.length) return;
 
-    setTimeout(() => {
+    const topicName = topicPath[topicPath.length - 1];
+    const userMsg = { role: "user", content: message };
+    const updated = [...messages, userMsg];
+    setMessages(updated);
+
+    try {
+      const lastPair = getLastPair(messages);
+      const data = await postChat(topicName, message, lastPair);
+      const assistantMsg = { role: "assistant", content: data.reply };
+      setMessages((prev) => [...prev, assistantMsg]);
+    } catch (err) {
+      console.error("Chat send failed:", err);
       setMessages((prev) => [
         ...prev,
-        {
-          role: "assistant",
-          content: `Response for "${message}" about ${topicPath.join(" / ")}`,
-        },
+        { role: "assistant", content: "⚠️ Error contacting backend." },
       ]);
-    }, 400);
+    }
   };
 
-  // --- Reset everything (used by logo)
+  // === Reset everything ===
   const handleReset = () => {
     setTopicPath([]);
     setMessages([]);
+    clearState();
     document.dispatchEvent(new Event("collapseAll"));
   };
 
@@ -109,12 +144,7 @@ export default function App() {
           )}
         </div>
 
-
-        <ChatWindow
-          topic={currentTopic}
-          messages={messages}
-          onSend={handleSend}
-        />
+        <ChatWindow topic={currentTopic} messages={messages} onSend={handleSend} />
       </main>
     </div>
   );
