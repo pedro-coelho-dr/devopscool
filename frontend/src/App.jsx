@@ -1,56 +1,35 @@
 import "./styles/main.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import RoadmapTree from "./components/RoadmapTree";
 import ChatWindow from "./components/ChatWindow";
 import { postChat } from "./utils/api";
-import { loadState, saveState, clearState } from "./utils/storage";
-import { getLastPair } from "./utils/chatLogic";
 
 export default function App() {
   const [topicPath, setTopicPath] = useState([]);
   const [messages, setMessages] = useState([]);
 
-  // === Load previous session on startup ===
-  useEffect(() => {
-    const { topicPath, messages } = loadState();
-    setTopicPath(topicPath);
-    setMessages(messages);
-  }, []);
-
-  // === Persist state in localStorage ===
-  useEffect(() => {
-    if (topicPath.length > 0) saveState(topicPath, messages);
-  }, [topicPath, messages]);
-
   // === Handle topic selection ===
   const handleSelectTopic = async (path) => {
-    const topicName = path[path.length - 1];
+    const topicFullPath = path.join(" / ");
     setTopicPath(path);
-    setMessages([]);
-    clearState();
+    setMessages([]); // clear previous chat
 
     try {
-      // First backend fetch: introduction for that topic
-      const data = await postChat(topicName, null, null);
+      const data = await postChat(topicFullPath);
       setMessages([{ role: "assistant", content: data.reply }]);
     } catch (err) {
-      console.error("Initial topic load failed:", err);
+      console.error("Topic load failed:", err);
       setMessages([{ role: "assistant", content: "⚠️ Could not load topic." }]);
     }
   };
 
-  // === Handle user input send ===
+  // === Handle user input ===
   const handleSend = async (message) => {
-    if (!topicPath.length) return;
+    if (!topicPath.length) return; // only send if topic is selected
 
-    const topicName = topicPath[topicPath.length - 1];
-    const userMsg = { role: "user", content: message };
-    const updated = [...messages, userMsg];
-    setMessages(updated);
-
+    const topicFullPath = topicPath.join(" / ");
     try {
-      const lastPair = getLastPair(messages);
-      const data = await postChat(topicName, message, lastPair);
+      const data = await postChat(topicFullPath, message);
       const assistantMsg = { role: "assistant", content: data.reply };
       setMessages((prev) => [...prev, assistantMsg]);
     } catch (err) {
@@ -62,11 +41,19 @@ export default function App() {
     }
   };
 
-  // === Reset everything ===
-  const handleReset = () => {
-    setTopicPath([]);
+  // === Reset app or go back to DevOps root ===
+  const handleReset = async () => {
+    setTopicPath(["DevOps"]);
     setMessages([]);
-    clearState();
+
+    try {
+      const data = await postChat("DevOps");
+      setMessages([{ role: "assistant", content: data.reply }]);
+    } catch (err) {
+      console.error("DevOps load failed:", err);
+      setMessages([{ role: "assistant", content: "⚠️ Could not load DevOps intro." }]);
+    }
+
     document.dispatchEvent(new Event("collapseAll"));
   };
 
@@ -77,7 +64,7 @@ export default function App() {
       {/* ==== SIDEBAR ==== */}
       <aside className="sidebar">
         <header className="sidebar-header">
-          <button className="logo-button" onClick={handleReset} title="Reset App">
+          <button className="logo-button" onClick={handleReset} title="Back to DevOps">
             DevOpsCool
           </button>
           <div className="header-controls">
@@ -117,35 +104,46 @@ export default function App() {
 
       {/* ==== MAIN CHAT AREA ==== */}
       <main className="chat-area">
-        <div className="chat-header">
-          <h2>
-            {topicPath.length > 0 ? (
-              <>
-                {topicPath.map((part, i) => (
-                  <span key={i}>
-                    {i > 0 && <span className="path-separator">/</span>}
-                    {part}
-                  </span>
-                ))}
-              </>
-            ) : (
-              "Select a topic"
-            )}
-          </h2>
+        {messages.length === 0 && topicPath.length === 0 ? (
+          <div className="welcome-screen">
+            <img
+              src="/favicon.png"
+              alt="DevOpsCool logo"
+              className="welcome-logo"
+              style={{ width: "120px", marginBottom: "1rem" }}
+            />
+            <h2>Welcome to DevOpsCool</h2>
+            <p>Select a topic from the sidebar to get started.</p>
+          </div>
+        ) : (
+          <>
+            <div className="chat-header">
+              <h2>
+                {topicPath.length > 0 &&
+                  topicPath.map((part, i) => (
+                    <span key={i}>
+                      {i > 0 && <span className="path-separator">/</span>}
+                      {part}
+                    </span>
+                  ))}
+              </h2>
 
-          {currentTopic && (
-            <button
-              className="icon-button refresh"
-              onClick={() => setMessages([])}
-              title="Refresh Context"
-            >
-              <span className="material-symbols-outlined">refresh</span>
-            </button>
-          )}
-        </div>
+              {currentTopic && (
+                <button
+                  className="icon-button refresh"
+                  onClick={() => handleSelectTopic(topicPath)}
+                  title="Refresh Topic"
+                >
+                  <span className="material-symbols-outlined">refresh</span>
+                </button>
+              )}
+            </div>
 
-        <ChatWindow topic={currentTopic} messages={messages} onSend={handleSend} />
+            <ChatWindow topic={currentTopic} messages={messages} onSend={handleSend} />
+          </>
+        )}
       </main>
+
     </div>
   );
 }
