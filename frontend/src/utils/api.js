@@ -16,3 +16,4 @@ export async function postChat(topic, user_input = null) {
 
   return await res.json();
 }
+ 
