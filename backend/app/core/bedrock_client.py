@@ -2,7 +2,6 @@ import json
 import re
 import boto3
 from botocore.exceptions import ClientError
-from app.core.config import settings
 
 SYSTEM_PROMPT = """
 You are DevOpsCool, a mentor that provides clear and structured explanations about DevOps and Cloud Computing.
@@ -17,10 +16,13 @@ Your task:
 ### Next Steps
 """
 
-client = boto3.client("bedrock-runtime", region_name=settings.AWS_DEFAULT_REGION)
+AWS_REGION = "us-east-1"
+BEDROCK_MODEL_ID = "openai.gpt-oss-120b-1:0"
+
+client = boto3.client("bedrock-runtime", region_name=AWS_REGION)
 
 def bedrock_chat(topic_path: str, user_input: str | None = None, model_id: str | None = None) -> str:
-    model = model_id or settings.BEDROCK_MODEL_ID
+    model = BEDROCK_MODEL_ID
 
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
