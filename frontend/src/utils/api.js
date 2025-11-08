@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export async function postChat(topic, user_input = null) {
   const payload = { topic, user_input };
@@ -16,4 +16,3 @@ export async function postChat(topic, user_input = null) {
 
   return await res.json();
 }
-

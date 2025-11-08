@@ -13,7 +13,7 @@ app = FastAPI(title="DevOpsCool", debug=DEBUG_MODE)
 
 origins = [
     "http://localhost:5173",
-    "https://devopscool",
+    "https://devopscool.corisco.space",
 ]
 
 app.add_middleware(
