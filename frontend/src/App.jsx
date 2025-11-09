@@ -4,36 +4,39 @@ import RoadmapTree from "./components/RoadmapTree";
 import ChatWindow from "./components/ChatWindow";
 import { postChat } from "./utils/api";
 
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ArrowPathIcon,
+  Bars3Icon,
+} from "@heroicons/react/24/outline";
+
 export default function App() {
   const [topicPath, setTopicPath] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // === Handle topic selection ===
   const handleSelectTopic = async (path) => {
     const topicFullPath = path.join(" / ");
     setTopicPath(path);
-    setMessages([]); // clear previous chat
-
+    setMessages([]);
     try {
       const data = await postChat(topicFullPath);
       setMessages([{ role: "assistant", content: data.reply }]);
+      setSidebarOpen(false); // auto-close on mobile
     } catch (err) {
       console.error("Topic load failed:", err);
       setMessages([{ role: "assistant", content: "⚠️ Could not load topic." }]);
     }
   };
 
-  // === Handle user input ===
   const handleSend = async (message) => {
-    if (!topicPath.length) return; // only send if topic is selected
-
+    if (!topicPath.length) return;
     const topicFullPath = topicPath.join(" / ");
     try {
       const data = await postChat(topicFullPath, message);
-      const assistantMsg = { role: "assistant", content: data.reply };
-      setMessages((prev) => [...prev, assistantMsg]);
-    } catch (err) {
-      console.error("Chat send failed:", err);
+      setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
+    } catch {
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: "⚠️ Error contacting backend." },
@@ -41,100 +44,112 @@ export default function App() {
     }
   };
 
-  // === Reset app or go back to DevOps root ===
   const handleReset = async () => {
     setTopicPath(["DevOps"]);
     setMessages([]);
-
     try {
       const data = await postChat("DevOps");
       setMessages([{ role: "assistant", content: data.reply }]);
-    } catch (err) {
-      console.error("DevOps load failed:", err);
+    } catch {
       setMessages([{ role: "assistant", content: "⚠️ Could not load DevOps intro." }]);
     }
-
     document.dispatchEvent(new Event("collapseAll"));
   };
 
   const currentTopic = topicPath.join(" / ");
 
   return (
-    <div className="app">
+    <div className="flex h-screen bg-[#121212] text-[#eaeaea] font-[Inter]">
+      {/* ==== MOBILE TOGGLE ==== */}
+      <button
+        onClick={() => setSidebarOpen((p) => !p)}
+        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-orange-500 text-black rounded-md shadow-lg"
+      >
+        <Bars3Icon className="w-6 h-6" />
+      </button>
+
       {/* ==== SIDEBAR ==== */}
-      <aside className="sidebar">
-        <header className="sidebar-header">
-          <button className="logo-button" onClick={handleReset} title="Back to DevOps">
+      <aside
+        className={`fixed md:static top-0 left-0 z-40 h-full w-64 md:w-72 bg-[#1e1e1e] border-r border-[#2a2a2a] flex flex-col justify-between transform transition-transform duration-300 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}
+      >
+        <header className="flex items-center justify-between p-4 border-b border-[#2a2a2a]">
+          <button
+            onClick={handleReset}
+            className="text-orange-500 font-[Orbitron] text-lg hover:text-orange-400 transition"
+          >
             DevOpsCool
           </button>
-          <div className="header-controls">
+
+          <div className="flex gap-2">
             <button
               onClick={() => document.dispatchEvent(new Event("expandAll"))}
-              className="icon-button"
               title="Expand All"
+              className="hover:text-orange-400"
             >
-              <span className="material-symbols-outlined">unfold_more</span>
+              <ChevronDownIcon className="w-5 h-5" />
             </button>
             <button
               onClick={() => document.dispatchEvent(new Event("collapseAll"))}
-              className="icon-button"
               title="Collapse All"
+              className="hover:text-orange-400"
             >
-              <span className="material-symbols-outlined">unfold_less</span>
+              <ChevronUpIcon className="w-5 h-5" />
             </button>
           </div>
         </header>
 
-        <nav className="roadmap">
+        <nav className="flex-1 overflow-y-auto px-4 py-2">
           <RoadmapTree
             onSelect={handleSelectTopic}
             activeTopic={topicPath[topicPath.length - 1]}
           />
         </nav>
 
-        <footer className="sidebar-footer">
-          <p>
-            Built upon the{" "}
-            <a href="https://roadmap.sh/devops" target="_blank" rel="noreferrer">
-              DevOps Roadmap
-            </a>
-          </p>
+        <footer className="text-xs text-[#b3b3b3] border-t border-[#2a2a2a] p-3">
+          Built upon the{" "}
+          <a
+            href="https://roadmap.sh/devops"
+            target="_blank"
+            rel="noreferrer"
+            className="text-orange-500 hover:underline"
+          >
+            DevOps Roadmap
+          </a>
         </footer>
       </aside>
 
       {/* ==== MAIN CHAT AREA ==== */}
-      <main className="chat-area">
+      <main className="flex-1 flex flex-col p-4 md:p-6 min-h-0 overflow-hidden text-[15px] leading-relaxed">
+
         {messages.length === 0 && topicPath.length === 0 ? (
-          <div className="welcome-screen">
+          <div className="flex flex-col items-center justify-center flex-1 text-center">
             <img
               src="/favicon.png"
               alt="DevOpsCool logo"
-              className="welcome-logo"
-              style={{ width: "120px", marginBottom: "1rem" }}
+              className="w-24 mb-4"
             />
-            <h2>Welcome to DevOpsCool</h2>
-            <p>Select a topic from the sidebar to get started.</p>
+            <h2 className="font-[Orbitron] text-2xl text-orange-500 mb-2">
+              Welcome to DevOpsCool
+            </h2>
+            <p className="text-[#b3b3b3] text-sm">
+              Select a topic from the sidebar to get started.
+            </p>
           </div>
         ) : (
           <>
-            <div className="chat-header">
-              <h2>
-                {topicPath.length > 0 &&
-                  topicPath.map((part, i) => (
-                    <span key={i}>
-                      {i > 0 && <span className="path-separator">/</span>}
-                      {part}
-                    </span>
-                  ))}
+            <div className="flex justify-between items-center border-b border-[#2a2a2a] pb-2 mb-3">
+              <h2 className="text-orange-500 text-sm font-semibold truncate">
+                {currentTopic || "DevOps"}
               </h2>
-
               {currentTopic && (
                 <button
-                  className="icon-button refresh"
                   onClick={() => handleSelectTopic(topicPath)}
                   title="Refresh Topic"
+                  className="hover:text-orange-400"
                 >
-                  <span className="material-symbols-outlined">refresh</span>
+                  <ArrowPathIcon className="w-5 h-5" />
                 </button>
               )}
             </div>
@@ -143,7 +158,6 @@ export default function App() {
           </>
         )}
       </main>
-
     </div>
   );
 }

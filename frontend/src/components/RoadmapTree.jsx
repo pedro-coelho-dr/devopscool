@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import { roadmap } from "../data/roadmap";
 
 export default function RoadmapTree({ onSelect, activeTopic }) {
   const [expanded, setExpanded] = useState({});
 
-  const toggle = (title) => {
-    setExpanded((prev) => ({ ...prev, [title]: !prev[title] }));
-  };
+  const toggle = (title) => setExpanded((prev) => ({ ...prev, [title]: !prev[title] }));
 
   const setAll = (value) => {
     const all = {};
@@ -35,42 +34,51 @@ export default function RoadmapTree({ onSelect, activeTopic }) {
     const currentPath = [...path, node.title];
     const hasChildren = node.children && node.children.length > 0;
     const isOpen = expanded[node.title];
+    const isActive = activeTopic === node.title;
 
     return (
-        <li key={node.title} className="roadmap-item" style={{ marginLeft: depth * 12 }}>
+      <li key={node.title} className="my-1">
         <div
-            className={`node-container depth-${depth} ${
-            activeTopic === node.title ? "active" : ""
+          className={`flex items-center justify-between rounded-md px-3 py-2 border transition-all duration-200 cursor-pointer select-none
+            ${
+              isActive
+                ? "border-orange-500 bg-orange-500/10 text-orange-400"
+                : "border-transparent bg-[#1a1a1a] text-neutral-300 hover:bg-[#222] hover:border-[#333]"
             }`}
+          style={{ marginLeft: depth * 10 }}
         >
-            <button className="topic-button" onClick={() => onSelect(currentPath)}>
+          <button
+            onClick={() => onSelect(currentPath)}
+            className="flex-1 text-left text-sm sm:text-base font-medium truncate"
+          >
             {node.title}
-            </button>
+          </button>
 
-            {hasChildren && (
-            <span
-                className="expand-arrow"
-                onClick={() => toggle(node.title)}
-                title={isOpen ? "Collapse" : "Expand"}
+          {hasChildren && (
+            <button
+              onClick={() => toggle(node.title)}
+              title={isOpen ? "Collapse" : "Expand"}
+              className="ml-2 p-1 rounded-md text-orange-400 hover:bg-orange-500/20 transition"
             >
-                <span className="material-symbols-outlined">
-                {isOpen ? "expand_less" : "expand_more"}
-                </span>
-            </span>
-            )}
+              {isOpen ? (
+                <ChevronUpIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+              ) : (
+                <ChevronDownIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+              )}
+            </button>
+          )}
         </div>
 
         {hasChildren && isOpen && (
-            <ul className="subtree">
+          <ul className="ml-3 border-l border-[#333] pl-3 mt-1 space-y-1">
             {node.children.map((child) =>
-                renderNode(child, depth + 1, currentPath)
+              renderNode(child, depth + 1, currentPath)
             )}
-            </ul>
+          </ul>
         )}
-        </li>
+      </li>
     );
-    };
+  };
 
-
-  return <ul className="tree-root">{roadmap.map((n) => renderNode(n))}</ul>;
+  return <ul className="text-sm sm:text-base">{roadmap.map((n) => renderNode(n))}</ul>;
 }
