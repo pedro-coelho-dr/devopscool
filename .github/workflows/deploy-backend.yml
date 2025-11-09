@@ -50,6 +50,12 @@ jobs:
             --task-definition ${{ secrets.ECS_TASK_DEFINITION }} \
             --query taskDefinition > task-definition.json
 
+      - name: Sanitize task definition JSON
+        run: |
+          echo "Removing unsupported ECS parameters..."
+          cat task-definition.json | jq 'del(.enableFaultInjection)' > sanitized-task.json
+          mv sanitized-task.json task-definition.json
+
       - name: Update ECS task definition image
         id: render-task
         uses: aws-actions/amazon-ecs-render-task-definition@v1
@@ -66,7 +72,6 @@ jobs:
           cluster: ${{ secrets.ECS_CLUSTER }}
           wait-for-service-stability: true
 
-      # --- OPTIONAL DEBUG / FALLBACK ---
       - name: (Optional) Force new ECS deployment
         if: ${{ always() }}
         run: |
