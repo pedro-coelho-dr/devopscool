@@ -98,7 +98,7 @@ Each interaction follows a stateless request–response cycle, keeping the syste
 | `routes_chat.py` | Defines `/api/chat` and `/health` endpoints. |
 | `chat.py` | Pydantic models that define the schema for chat requests and responses. |
 | `bedrock_client.py` | Manages prompt construction, LLM invocation, and response parsing. |
-| `config.py` | Centralized configuration for AWS and environment variables. |
+
 
 ### Request Flow
 
@@ -127,7 +127,7 @@ Each interaction follows a stateless request–response cycle, keeping the syste
    ```
 
 4. **LLM Invocation (Bedrock)**  
-   The `bedrock_chat()` function uses the AWS Bedrock Runtime client (`boto3.client("bedrock-runtime")`) to invoke the model with configured parameters:
+   The `bedrock_chat()` function uses the AWS Bedrock Runtime client `boto3.client("bedrock-runtime")` to invoke the **OpenAI OSS 120B** model (`openai.gpt-oss-120b-1:0`) through the Bedrock Runtime API, with configured parameters:
 
    ```python
    {
@@ -144,6 +144,7 @@ Each interaction follows a stateless request–response cycle, keeping the syste
 
 6. **Frontend Rendering**  
    The React interface displays the structured Markdown output to the user.
+
 
 ### System Prompt
 
@@ -162,7 +163,76 @@ Your task:
 """
 ```
 
-The prompt ensures predictable and educational responses — concise, logically structured, and visually consistent in Markdown.
-
 ## DevOps
 
+### Cloud Infrastructure
+
+The system runs on **AWS** within a **VPC** that isolates compute and network resources.  
+The **FastAPI backend** executes on **ECS Fargate** in private subnets and is exposed through an **Application Load Balancer (ALB)** configured with an **ACM TLS certificate** for HTTPS.  
+Traffic is routed via the ALB’s DNS endpoint, while the **React frontend** is hosted on **S3** and distributed globally through **CloudFront**, also secured with HTTPS.  
+Backend tasks communicate with **Amazon Bedrock** using `boto3`, authenticated by **IAM task roles** that provide scoped permissions for model invocation.
+
+
+```mermaid
+flowchart TB
+    subgraph VPC[VPC]
+        IGW[Internet Gateway]
+
+        subgraph PublicSubnet[Public Subnet]
+            ALB[Load Balancer]
+        end
+
+        subgraph PrivateSubnet[Private Subnet]
+            ECS[ECS Fargate Service]
+        end
+
+        IGW --> ALB --> ECS
+    end
+
+    subgraph STORAGE[Storage and CDN]
+        S3[S3 Bucket]
+        CF[CloudFront]
+        S3 --> CF
+    end
+
+    subgraph AI[AI Layer]
+        BEDROCK[Bedrock API]
+    end
+
+    ECS --> BEDROCK
+    ECS --> S3
+    CF --> ALB
+
+
+```
+
+### CI/CD Pipeline
+
+Two **GitHub Actions** workflows manage deployment from the `release` branch — one for the **backend**, one for the **frontend**.  
+The backend workflow builds the FastAPI image, pushes it to **ECR**, and updates the **ECS Fargate** service.  
+The frontend workflow builds the React app, uploads artifacts to **S3**, and invalidates **CloudFront** caches for immediate refresh.
+
+
+```mermaid
+flowchart TB
+    subgraph GitHub[GitHub Actions]
+        A1[Backend Workflow] -->|Build & Push| ECR[ECR Repository]
+        ECR -->|Update Task| ECS[ECS Service]
+        A2[Frontend Workflow] -->|Build & Upload| S3[S3 Bucket]
+        S3 --> CF[CloudFront Distribution]
+    end
+
+    CF --> Users[End Users]
+    ECS --> BEDROCK[Bedrock API]
+
+```
+**Backend Workflow**
+1. Build Docker image from `backend/`.  
+2. Push to Amazon ECR.  
+3. Update ECS task definition and deploy the new revision.
+
+**Frontend Workflow**
+1. Build React app from `frontend/`.  
+2. Sync `dist/` output to S3.  
+3. Invalidate CloudFront cache for global content propagation.
+   
