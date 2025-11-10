@@ -30,15 +30,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Force correct Tailwind version
-        run: |
-          npm install tailwindcss@4.1.17 @tailwindcss/vite@4.1.17 --save-exact
-
       - name: Build project
         run: npm run build
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
+      # ---- DEPLOY VIA AWS CLI ----
       - name: Upload build to S3
         run: |
           echo "Uploading files to S3..."
