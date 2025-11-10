@@ -17,12 +17,13 @@ export default function ChatWindow({ messages }) {
   return (
     <div className="flex flex-col gap-6 pb-32">
       {showWelcome && (
-        <div className="flex flex-col items-center justify-center h-[70vh] text-center animate-fadeIn">
+        <div className="flex flex-col items-center justify-center h-[70vh] text-center">
           <img
             src="/favicon.png"
             alt="DevOpsCool Logo"
-            className="w-20 h-20 mb-6 opacity-90"
+            className="w-20 h-20 mb-6 opacity-90 animate-pulse-slow"
           />
+
         </div>
       )}
 
