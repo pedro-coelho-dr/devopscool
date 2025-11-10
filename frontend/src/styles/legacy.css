@@ -19,6 +19,7 @@ body {
   font-family: var(--font-body);
 }
 
+
 .app {
   display: flex;
   height: 100vh;
