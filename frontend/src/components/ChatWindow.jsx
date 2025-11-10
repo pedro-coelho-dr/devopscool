@@ -27,20 +27,36 @@ export default function ChatWindow({ messages }) {
       )}
 
       {!showWelcome &&
-        messages.map((m, i) => (
+        messages
+          .filter((m) => m.role === "assistant")
+          .map((m, i) => (
+
           <div
             key={i}
             ref={i === messages.length - 1 ? lastMessageRef : null}
             className="border border-[#2a2a2a] bg-[#1b1b1b] rounded-xl p-6 text-[#e6e6e6] leading-[1.75] shadow-sm"
           >
-            <div className="prose prose-invert max-w-3xl mx-auto prose-lg leading-relaxed">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeSanitize]}
-              >
-                {m.content}
-              </ReactMarkdown>
-            </div>
+           <div
+  className="prose prose-neutral prose-invert lg:prose-lg mx-auto leading-relaxed
+             prose-headings:text-[#ff8c42]
+             prose-p:text-neutral-400
+             prose-li:text-neutral-400
+             prose-strong:text-neutral-200
+             prose-a:text-neutral-400 hover:prose-a:text-neutral-200
+             prose-code:text-neutral-300
+             prose-pre:bg-neutral-950 prose-pre:text-neutral-300
+             prose-blockquote:text-neutral-500 prose-blockquote:border-l-neutral-700"
+>
+  <ReactMarkdown
+    remarkPlugins={[remarkGfm]}
+    rehypePlugins={[rehypeSanitize]}
+  >
+    {m.content}
+  </ReactMarkdown>
+</div>
+
+
+
           </div>
         ))}
     </div>

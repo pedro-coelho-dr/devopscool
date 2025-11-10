@@ -48,18 +48,27 @@ export default function App() {
   };
 
   const handleSend = async (message) => {
-    if (!topicPath.length) return;
-    const topicFullPath = topicPath.join(" / ");
-    try {
-      const data = await postChat(topicFullPath, message);
-      setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: "⚠️ Error contacting backend." },
-      ]);
-    }
-  };
+  if (topicPath.length === 0) {
+    setTopicPath(["General"]);
+  }
+
+  const topicFullPath = topicPath.length ? topicPath.join(" / ") : "General";
+
+  try {
+    const data = await postChat(topicFullPath, message);
+
+   setMessages((prev) => [
+     ...prev,
+     { role: "assistant", content: data.reply },
+   ]);
+  } catch {
+    setMessages((prev) => [
+      ...prev,
+      { role: "assistant", content: "⚠️ Error contacting backend." },
+    ]);
+  }
+};
+
 
   const handleReset = () => {
     setTopicPath([]);
@@ -139,9 +148,7 @@ export default function App() {
       </main>
 
       {/* ==== INPUT BAR ==== */}
-      {inputVisible && (
-        <InputBar onSend={handleSend} disabled={topicPath.length === 0} />
-      )}
+      {inputVisible && <InputBar onSend={handleSend} />}
     </div>
   );
 }
