@@ -1,8 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-
-
 /* === FONT-FACES === */
 @font-face {
   font-display: swap;
