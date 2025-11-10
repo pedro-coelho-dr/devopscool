@@ -1,8 +1,16 @@
 import "./styles/main.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RoadmapTree from "./components/RoadmapTree";
 import ChatWindow from "./components/ChatWindow";
+import RoadmapOverview from "./components/RoadmapOverview";
+import InputBar from "./components/InputBar";
 import { postChat } from "./utils/api";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  Bars3Icon,
+  ChatBubbleLeftRightIcon,
+} from "@heroicons/react/24/outline";
 
 import {
   ChevronDownIcon,
@@ -15,6 +23,26 @@ export default function App() {
   const [topicPath, setTopicPath] = useState([]);
   const [messages, setMessages] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+<<<<<<< HEAD
+=======
+  const [inputVisible, setInputVisible] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+
+      if (!mobile) {
+        setInputVisible(true);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+>>>>>>> origin/main
 
   const handleSelectTopic = async (path) => {
     const topicFullPath = path.join(" / ");
@@ -23,9 +51,14 @@ export default function App() {
     try {
       const data = await postChat(topicFullPath);
       setMessages([{ role: "assistant", content: data.reply }]);
+<<<<<<< HEAD
       setSidebarOpen(false); // auto-close on mobile
     } catch (err) {
       console.error("Topic load failed:", err);
+=======
+      if (isMobile) setSidebarOpen(false);
+    } catch {
+>>>>>>> origin/main
       setMessages([{ role: "assistant", content: "⚠️ Could not load topic." }]);
     }
   };
@@ -44,6 +77,7 @@ export default function App() {
     }
   };
 
+<<<<<<< HEAD
   const handleReset = async () => {
     setTopicPath(["DevOps"]);
     setMessages([]);
@@ -53,12 +87,16 @@ export default function App() {
     } catch {
       setMessages([{ role: "assistant", content: "⚠️ Could not load DevOps intro." }]);
     }
+=======
+  const handleReset = () => {
+    setTopicPath([]);
+    setMessages([]);
+>>>>>>> origin/main
     document.dispatchEvent(new Event("collapseAll"));
   };
 
-  const currentTopic = topicPath.join(" / ");
-
   return (
+<<<<<<< HEAD
     <div className="flex h-screen bg-[#121212] text-[#eaeaea] font-[Inter]">
       {/* ==== MOBILE TOGGLE ==== */}
       <button
@@ -72,6 +110,32 @@ export default function App() {
       <aside
         className={`fixed md:static top-0 left-0 z-40 h-full w-64 md:w-72 bg-[#1e1e1e] border-r border-[#2a2a2a] flex flex-col justify-between transform transition-transform duration-300 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+=======
+    <div className="bg-[#121212] text-[#eaeaea] font-[Inter]">
+      {/* ==== MOBILE TOGGLES ==== */}
+      {isMobile && (
+        <div className="fixed top-4 right-4 z-50 flex gap-3">
+          <button
+            onClick={() => setSidebarOpen((p) => !p)}
+            className="p-2 bg-orange-500 text-black rounded-md shadow-md hover:scale-105 transition-transform"
+          >
+            <Bars3Icon className="w-6 h-6" />
+          </button>
+
+          <button
+            onClick={() => setInputVisible((p) => !p)}
+            className="p-2 bg-orange-500 text-black rounded-md shadow-md hover:scale-105 transition-transform"
+          >
+            <ChatBubbleLeftRightIcon className="w-6 h-6" />
+          </button>
+        </div>
+      )}
+
+      {/* ==== SIDEBAR ==== */}
+      <aside
+        className={`fixed top-0 left-0 z-40 h-screen w-64 md:w-72 bg-[#1e1e1e] border-r border-[#2a2a2a] flex flex-col justify-between transform transition-transform duration-300 ${
+          sidebarOpen || !isMobile ? "translate-x-0" : "-translate-x-full"
+>>>>>>> origin/main
         }`}
       >
         <header className="flex items-center justify-between p-4 border-b border-[#2a2a2a]">
@@ -81,18 +145,27 @@ export default function App() {
           >
             DevOpsCool
           </button>
+<<<<<<< HEAD
 
           <div className="flex gap-2">
             <button
               onClick={() => document.dispatchEvent(new Event("expandAll"))}
               title="Expand All"
+=======
+          <div className="flex gap-2">
+            <button
+              onClick={() => document.dispatchEvent(new Event("expandAll"))}
+>>>>>>> origin/main
               className="hover:text-orange-400"
             >
               <ChevronDownIcon className="w-5 h-5" />
             </button>
             <button
               onClick={() => document.dispatchEvent(new Event("collapseAll"))}
+<<<<<<< HEAD
               title="Collapse All"
+=======
+>>>>>>> origin/main
               className="hover:text-orange-400"
             >
               <ChevronUpIcon className="w-5 h-5" />
@@ -106,6 +179,7 @@ export default function App() {
             activeTopic={topicPath[topicPath.length - 1]}
           />
         </nav>
+<<<<<<< HEAD
 
         <footer className="text-xs text-[#b3b3b3] border-t border-[#2a2a2a] p-3">
           Built upon the{" "}
@@ -158,6 +232,27 @@ export default function App() {
           </>
         )}
       </main>
+=======
+      </aside>
+
+      {/* ==== MAIN AREA ==== */}
+      <main
+        className={`transition-all duration-300 px-4 md:px-6 py-20 md:py-24 min-h-screen ${
+          !isMobile ? "ml-72" : "ml-0"
+        }`}
+      >
+        {topicPath.length === 0 ? (
+          <RoadmapOverview onSelect={handleSelectTopic} />
+        ) : (
+          <ChatWindow messages={messages} />
+        )}
+      </main>
+
+      {/* ==== INPUT BAR ==== */}
+      {inputVisible && (
+        <InputBar onSend={handleSend} disabled={topicPath.length === 0} />
+      )}
+>>>>>>> origin/main
     </div>
   );
 }

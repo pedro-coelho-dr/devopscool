@@ -64,6 +64,7 @@
   .btn {
     @apply px-3 py-2 rounded-md bg-orange-500 text-black font-medium hover:bg-orange-400 transition;
   }
+<<<<<<< HEAD
 
   .card {
     @apply bg-[#1e1e1e] border border-[#2a2a2a] rounded-xl p-4 shadow-md;
@@ -73,3 +74,35 @@
     @apply flex items-center justify-center;
   }
 }
+=======
+
+  .card {
+    @apply bg-[#1e1e1e] border border-[#2a2a2a] rounded-xl p-4 shadow-md;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+.animate-bounce-slow { animation: bounce-slow 2.5s infinite; }
+>>>>>>> origin/main
