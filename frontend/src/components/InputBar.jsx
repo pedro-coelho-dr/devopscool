@@ -34,7 +34,7 @@ export default function InputBar({ onSend, disabled = false }) {
         <button
           type="submit"
           disabled={isWaiting || !input.trim() || disabled}
-          className="flex items-center justify-center px-4 py-2 rounded-md bg-gradient-to-br from-[#ff8c42] to-[#ffb868] text-black font-medium hover:scale-[1.03] transition-transform disabled:opacity-50"
+          className="flex items-center justify-center px-4 py-2 rounded-md bg-linear-to-br from-[#ff8c42] to-[#ffb868] text-black font-medium hover:scale-[1.03] transition-transform disabled:opacity-50"
         >
           <ArrowUpCircleIcon className="w-6 h-6" />
         </button>
