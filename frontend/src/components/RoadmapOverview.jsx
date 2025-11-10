@@ -30,7 +30,7 @@ export default function RoadmapOverview({ onSelect }) {
         {/* Connector line */}
         {hasChildren && (
           <div
-            className={`w-[1.5px] h-10 my-3 bg-gradient-to-b from-[#444] to-transparent ${
+            className={`w-[1.5px] h-10 my-3 bg-linear-to-b from-[#444] to-transparent ${
               depth > 1 ? "opacity-60" : ""
             }`}
           />
@@ -81,7 +81,7 @@ export default function RoadmapOverview({ onSelect }) {
       </p>
 
       {/* separator line */}
-      <div className="w-2/3 h-[1px] bg-gradient-to-r from-transparent via-[#333] to-transparent mb-3" />
+      <div className="w-2/3 h-px bg-linear-to-r from-transparent via-[#333] to-transparent mb-3" />
 
       {/* arrow down  */}
       <ChevronDownIcon className="w-6 h-6 text-[#555] mb-12 animate-bounce-slow" />
@@ -94,7 +94,7 @@ export default function RoadmapOverview({ onSelect }) {
 
             {/* Separator between root sections */}
             {i < roadmap.length - 1 && (
-              <div className="w-3/4 h-[1px] bg-gradient-to-r from-transparent via-[#333] to-transparent my-10" />
+              <div className="w-3/4 h-px bg-linear-to-r from-transparent via-[#333] to-transparent my-10" />
             )}
           </div>
         ))}

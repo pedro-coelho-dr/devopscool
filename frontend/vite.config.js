@@ -3,22 +3,15 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({ mode }) => {
-  // Load .env and environment variables (from GitHub or shell)
   const env = loadEnv(mode, process.cwd(), '');
-
-
-  // Default fallback for local dev
   const apiUrl = env.VITE_API_URL;
 
   return {
-    plugins: [react(),tailwindcss()],
-
+    plugins: [react(), tailwindcss()],
     define: {
       __APP_ENV__: JSON.stringify(mode),
       __API_URL__: JSON.stringify(apiUrl),
     },
-
-    // Local dev server settings
     server: {
       port: 5173,
       proxy: {
@@ -29,8 +22,6 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-
-    // Production build configuration
     build: {
       outDir: 'dist',
       assetsDir: 'assets',
@@ -47,10 +38,6 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-
-    preview: {
-      port: 4173,
-      open: false,
-    },
+    preview: { port: 4173, open: false },
   };
 });
