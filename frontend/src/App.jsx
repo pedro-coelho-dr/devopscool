@@ -12,13 +12,6 @@ import {
   ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/outline";
 
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  ArrowPathIcon,
-  Bars3Icon,
-} from "@heroicons/react/24/outline";
-
 export default function App() {
   const [topicPath, setTopicPath] = useState([]);
   const [messages, setMessages] = useState([]);
