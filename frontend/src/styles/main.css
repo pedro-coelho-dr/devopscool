@@ -96,3 +96,17 @@
 }
 .animate-bounce-slow { animation: bounce-slow 2.5s infinite; }
 
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 1s ease-in-out infinite;
+}
