@@ -7,7 +7,7 @@ import json
 # -----------------------------------------------------
 # Configuration
 # -----------------------------------------------------
-DEBUG_MODE = False  # Toggle this flag to enable/disable debug logging
+DEBUG_MODE = True  # Toggle this flag to enable/disable debug logging
 
 app = FastAPI(title="DevOpsCool", debug=DEBUG_MODE)
 

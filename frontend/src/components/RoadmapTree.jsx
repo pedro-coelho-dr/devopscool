@@ -49,8 +49,9 @@ export default function RoadmapTree({ roadmap, onSelect, activeTopic }) {
         >
           <button
             onClick={() => onSelect(currentPath)}
-            className="flex-1 text-left text-sm sm:text-base font-medium truncate"
+            className="flex-1 text-left text-sm sm:text-base font-medium break-words whitespace-normal leading-snug"
           >
+
             {node.title}
           </button>
 
