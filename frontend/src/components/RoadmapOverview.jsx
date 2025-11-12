@@ -1,7 +1,6 @@
-import { roadmap } from "../data/roadmap";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
-export default function RoadmapOverview({ onSelect }) {
+export default function RoadmapOverview({ roadmap, onSelect }) {
   const renderNode = (node, depth = 0, path = []) => {
     const currentPath = [...path, node.title];
     const hasChildren = node.children && node.children.length > 0;
@@ -21,7 +20,7 @@ export default function RoadmapOverview({ onSelect }) {
         <div
           onClick={() => onSelect(currentPath)}
           className={`border rounded-sm text-center cursor-pointer transition-colors duration-200 hover:border-[#ffb868]
-            ${depthStyles[depth] || depthStyles[3]}
+            ${depthStyles[depth] || depthStyles[2]}
           `}
         >
           {node.title}
@@ -83,7 +82,7 @@ export default function RoadmapOverview({ onSelect }) {
       {/* separator line */}
       <div className="w-2/3 h-px bg-linear-to-r from-transparent via-[#333] to-transparent mb-3" />
 
-      {/* arrow down  */}
+      {/* arrow down */}
       <ChevronDownIcon className="w-6 h-6 text-[#555] mb-12 animate-bounce-slow" />
 
       {/* === Roadmap === */}
@@ -99,7 +98,6 @@ export default function RoadmapOverview({ onSelect }) {
           </div>
         ))}
       </div>
-
     </div>
   );
 }
