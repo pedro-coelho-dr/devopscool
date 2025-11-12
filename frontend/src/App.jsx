@@ -11,8 +11,13 @@ import {
   Bars3Icon,
   ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/outline";
+import { roadmap_en } from "./data/roadmap_en";
+import { roadmap_ptbr } from "./data/roadmap_ptbr";
 
 export default function App() {
+  const [language, setLanguage] = useState("en");
+  const roadmap = language === "pt-BR" ? roadmap_ptbr : roadmap_en;
+
   const [topicPath, setTopicPath] = useState([]);
   const [messages, setMessages] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -23,10 +28,7 @@ export default function App() {
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-
-      if (!mobile) {
-        setInputVisible(true);
-      }
+      if (!mobile) setInputVisible(true);
     };
 
     handleResize();
@@ -48,27 +50,25 @@ export default function App() {
   };
 
   const handleSend = async (message) => {
-  if (topicPath.length === 0) {
-    setTopicPath(["General"]);
-  }
+    if (topicPath.length === 0) {
+      setTopicPath(["General"]);
+    }
 
-  const topicFullPath = topicPath.length ? topicPath.join(" / ") : "General";
+    const topicFullPath = topicPath.length ? topicPath.join(" / ") : "General";
 
-  try {
-    const data = await postChat(topicFullPath, message);
-
-   setMessages((prev) => [
-     ...prev,
-     { role: "assistant", content: data.reply },
-   ]);
-  } catch {
-    setMessages((prev) => [
-      ...prev,
-      { role: "assistant", content: "⚠️ Error contacting backend." },
-    ]);
-  }
-};
-
+    try {
+      const data = await postChat(topicFullPath, message);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: data.reply },
+      ]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "⚠️ Error contacting backend." },
+      ]);
+    }
+  };
 
   const handleReset = () => {
     setTopicPath([]);
@@ -110,7 +110,7 @@ export default function App() {
           >
             DevOpsCool
           </button>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <button
               onClick={() => document.dispatchEvent(new Event("expandAll"))}
               className="hover:text-orange-400"
@@ -123,11 +123,27 @@ export default function App() {
             >
               <ChevronUpIcon className="w-5 h-5" />
             </button>
+
+            {/* === LANGUAGE TOGGLE === */}
+            <button
+              onClick={() => setLanguage(language === "en" ? "pt-BR" : "en")}
+              title={language === "en" ? "Change to Portuguese" : "Change to English"}
+              className={`ml-2 p-1.5 rounded-md border transition text-lg hover:scale-105
+                ${
+                  language === "pt-BR"
+                    ? "border-green-500 hover:border-green-400"
+                    : "border-blue-500 hover:border-blue-400"
+                }`}
+            >
+              {language === "pt-BR" ? "🇧🇷" : "🇺🇸"}
+            </button>
+
           </div>
         </header>
 
         <nav className="flex-1 overflow-y-auto px-4 py-2">
           <RoadmapTree
+            roadmap={roadmap}
             onSelect={handleSelectTopic}
             activeTopic={topicPath[topicPath.length - 1]}
           />
@@ -141,7 +157,7 @@ export default function App() {
         }`}
       >
         {topicPath.length === 0 ? (
-          <RoadmapOverview onSelect={handleSelectTopic} />
+          <RoadmapOverview roadmap={roadmap} onSelect={handleSelectTopic} />
         ) : (
           <ChatWindow messages={messages} />
         )}

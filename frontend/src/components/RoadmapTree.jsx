@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
-import { roadmap } from "../data/roadmap";
 
-export default function RoadmapTree({ onSelect, activeTopic }) {
+export default function RoadmapTree({ roadmap, onSelect, activeTopic }) {
   const [expanded, setExpanded] = useState({});
 
-  const toggle = (title) => setExpanded((prev) => ({ ...prev, [title]: !prev[title] }));
+  const toggle = (title) =>
+    setExpanded((prev) => ({ ...prev, [title]: !prev[title] }));
 
   const setAll = (value) => {
     const all = {};
@@ -28,7 +28,7 @@ export default function RoadmapTree({ onSelect, activeTopic }) {
       document.removeEventListener("expandAll", expandHandler);
       document.removeEventListener("collapseAll", collapseHandler);
     };
-  }, []);
+  }, [roadmap]); // Rebuild when language changes
 
   const renderNode = (node, depth = 0, path = []) => {
     const currentPath = [...path, node.title];
@@ -80,5 +80,9 @@ export default function RoadmapTree({ onSelect, activeTopic }) {
     );
   };
 
-  return <ul className="text-sm sm:text-base">{roadmap.map((n) => renderNode(n))}</ul>;
+  return (
+    <ul className="text-sm sm:text-base">
+      {roadmap.map((n) => renderNode(n))}
+    </ul>
+  );
 }

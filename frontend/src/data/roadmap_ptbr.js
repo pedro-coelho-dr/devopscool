@@ -1,6 +1,6 @@
-export const roadmap = [
+export const roadmap_ptbr = [
   {
-    title: "Learn a Programming Language",
+    title: "Aprenda uma Linguagem de Programação",
     children: [
       { title: "Python" },
       { title: "Go" },
@@ -10,7 +10,7 @@ export const roadmap = [
     ],
   },
   {
-    title: "Operating System",
+    title: "Sistema Operacional",
     children: [
       { title: "Windows" },
       {
@@ -26,39 +26,39 @@ export const roadmap = [
         children: [
           { title: "Ubuntu / Debian" },
           { title: "SUSE Linux" },
-          { title: "RHEL / Derivatives" },
+          { title: "RHEL / Derivados" },
         ],
       },
     ],
   },
   {
-    title: "Terminal Knowledge",
+    title: "Conhecimento de Terminal",
     children: [
       {
         title: "Scripting",
         children: [{ title: "Bash" }, { title: "PowerShell" }],
       },
       {
-        title: "Editors",
+        title: "Editores",
         children: [{ title: "Vim / Nano / Emacs" }],
       },
       {
-        title: "System Utilities",
+        title: "Utilitários de Sistema",
         children: [
-          { title: "Process Monitoring" },
-          { title: "Performance Monitoring" },
-          { title: "Networking Tools" },
-          { title: "Text Manipulation" },
+          { title: "Monitoramento de Processos" },
+          { title: "Monitoramento de Desempenho" },
+          { title: "Ferramentas de Rede" },
+          { title: "Manipulação de Texto" },
         ],
       },
     ],
   },
   {
-    title: "Version Control Systems",
+    title: "Controle de Versão",
     children: [
       { title: "Git" },
       {
-        title: "VCS Hosting",
+        title: "Hospedagem de VCS",
         children: [
           { title: "GitHub" },
           { title: "GitLab" },
@@ -72,14 +72,15 @@ export const roadmap = [
     children: [{ title: "Docker" }, { title: "LXC" }],
   },
   {
-    title: "What is and how to setup...",
+    title: "O que é e como configurar...",
     children: [
       { title: "Forward Proxy?" },
       { title: "Reverse Proxy?" },
-      { title: "Caching Server?" },
+      { title: "Servidor de Cache?" },
       { title: "Firewall?" },
       { title: "Load Balancer?" },
-      { title: "Web Server?",
+      {
+        title: "Servidor Web?",
         children: [
           { title: "Nginx" },
           { title: "Caddy" },
@@ -91,7 +92,7 @@ export const roadmap = [
     ],
   },
   {
-    title: "Networking & Protocols",
+    title: "Redes e Protocolos",
     children: [
       { title: "FTP / SFTP" },
       { title: "DNS" },
@@ -99,9 +100,9 @@ export const roadmap = [
       { title: "HTTPS" },
       { title: "SSL / TLS" },
       { title: "SSH" },
-      { title: "OSI Model" },
+      { title: "Modelo OSI" },
       {
-        title: "Email Protocols",
+        title: "Protocolos de E-mail",
         children: [
           { title: "White / Grey Listing" },
           { title: "SMTP" },
@@ -113,7 +114,7 @@ export const roadmap = [
         ],
       },
       {
-        title: "Cloud Providers",
+        title: "Provedores de Nuvem",
         children: [
           { title: "AWS" },
           { title: "Azure" },
@@ -128,7 +129,7 @@ export const roadmap = [
     ],
   },
   {
-    title: "Cloud Providers",
+    title: "Provedores de Nuvem",
     children: [
       { title: "AWS" },
       { title: "Azure" },
@@ -152,7 +153,7 @@ export const roadmap = [
     ],
   },
   {
-    title: "Provisioning",
+    title: "Provisionamento",
     children: [
       { title: "AWS CDK" },
       { title: "CloudFormation" },
@@ -161,7 +162,7 @@ export const roadmap = [
     ],
   },
   {
-    title: "Configuration Management",
+    title: "Gerenciamento de Configuração",
     children: [
       { title: "Chef" },
       { title: "Ansible" },
@@ -170,7 +171,7 @@ export const roadmap = [
     ],
   },
   {
-    title: "CI / CD Tools",
+    title: "Ferramentas de CI / CD",
     children: [
       { title: "TeamCity" },
       { title: "Jenkins" },
@@ -181,17 +182,17 @@ export const roadmap = [
     ],
   },
   {
-    title: "Secret Management",
+    title: "Gerenciamento de Segredos",
     children: [
       { title: "Sealed Secrets" },
       { title: "ESO" },
       { title: "Vault" },
       { title: "SOPs" },
-      { title: "Cloud Specific Tools" },
+      { title: "Ferramentas Específicas da Nuvem" },
     ],
   },
   {
-    title: "Infrastructure Monitoring",
+    title: "Monitoramento de Infraestrutura",
     children: [
       { title: "Prometheus" },
       { title: "Grafana" },
@@ -200,7 +201,7 @@ export const roadmap = [
     ],
   },
   {
-    title: "Logs Management",
+    title: "Gerenciamento de Logs",
     children: [
       { title: "Papertrail" },
       { title: "Splunk" },
@@ -210,7 +211,7 @@ export const roadmap = [
     ],
   },
   {
-    title: "Container Orchestration",
+    title: "Orquestração de Containers",
     children: [
       { title: "GKE / EKS / AKS" },
       { title: "AWS ECS / Fargate" },
@@ -220,7 +221,7 @@ export const roadmap = [
     ],
   },
   {
-    title: "Observability",
+    title: "Observabilidade",
     children: [
       { title: "Jaeger" },
       { title: "New Relic" },
@@ -231,7 +232,7 @@ export const roadmap = [
     ],
   },
   {
-    title: "Artifact Management",
+    title: "Gerenciamento de Artefatos",
     children: [
       { title: "Nexus" },
       { title: "Artifactory" },
@@ -252,12 +253,12 @@ export const roadmap = [
     ],
   },
   {
-    title: "Cloud Design Patterns",
+    title: "Padrões de Design em Nuvem",
     children: [
-      { title: "Availability" },
-      { title: "Data Management" },
-      { title: "Design and Implementation" },
-      { title: "Management and Monitoring" },
+      { title: "Disponibilidade" },
+      { title: "Gerenciamento de Dados" },
+      { title: "Design e Implementação" },
+      { title: "Gerenciamento e Monitoramento" },
     ],
   },
 ];
