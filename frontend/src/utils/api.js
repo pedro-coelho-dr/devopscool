@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
-export async function postChat(topic, user_input = null) {
-  const payload = { topic, user_input };
+export async function postChat(topic, user_input = null, language = "en") {
+  const payload = { topic, user_input, language };
 
   const res = await fetch(`${API_URL}/api/chat`, {
     method: "POST",

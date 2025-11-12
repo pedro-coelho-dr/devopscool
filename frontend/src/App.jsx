@@ -40,8 +40,9 @@ export default function App() {
     const topicFullPath = path.join(" / ");
     setTopicPath(path);
     setMessages([]);
+
     try {
-      const data = await postChat(topicFullPath);
+      const data = await postChat(topicFullPath, null, language);
       setMessages([{ role: "assistant", content: data.reply }]);
       if (isMobile) setSidebarOpen(false);
     } catch {
@@ -50,14 +51,12 @@ export default function App() {
   };
 
   const handleSend = async (message) => {
-    if (topicPath.length === 0) {
-      setTopicPath(["General"]);
-    }
+    if (topicPath.length === 0) setTopicPath(["General"]);
 
     const topicFullPath = topicPath.length ? topicPath.join(" / ") : "General";
 
     try {
-      const data = await postChat(topicFullPath, message);
+      const data = await postChat(topicFullPath, message, language);
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: data.reply },
@@ -110,6 +109,7 @@ export default function App() {
           >
             DevOpsCool
           </button>
+
           <div className="flex gap-2 items-center">
             <button
               onClick={() => document.dispatchEvent(new Event("expandAll"))}
@@ -128,16 +128,14 @@ export default function App() {
             <button
               onClick={() => setLanguage(language === "en" ? "pt-BR" : "en")}
               title={language === "en" ? "Change to Portuguese" : "Change to English"}
-              className={`ml-2 p-1.5 rounded-md border transition text-lg hover:scale-105
-                ${
-                  language === "pt-BR"
-                    ? "border-green-500 hover:border-green-400"
-                    : "border-blue-500 hover:border-blue-400"
-                }`}
+              className={`ml-2 p-1.5 rounded-md border transition text-lg hover:scale-105 ${
+                language === "pt-BR"
+                  ? "border-green-500 hover:border-green-400"
+                  : "border-blue-500 hover:border-blue-400"
+              }`}
             >
               {language === "pt-BR" ? "🇧🇷" : "🇺🇸"}
             </button>
-
           </div>
         </header>
 

@@ -22,6 +22,11 @@ graph LR
 
 ```
 
+### Language Support
+
+The system supports English (en) and Brazilian Portuguese (pt-BR).
+Users can toggle languages directly in the interface, and the backend dynamically loads corresponding system prompts to ensure fully localized explanations and structure.
+
 ## Frontend
 
 The frontend is a **React** single-page application built for **readability** and **comfort**, focusing on structured, Markdown-enhanced interaction.
@@ -41,6 +46,11 @@ The frontend is a **React** single-page application built for **readability** an
 | `RoadmapTree.jsx` | Tree-view roadmap navigation |
 | `api.js` | Backend communication via `fetch()` |
 
+
+### Styling
+
+The frontend is styled with Tailwind CSS, focusing on a modern and responsive interface.
+It also leverages Tailwind Typography to render Markdown responses with clean, readable formatting that adapts naturally to light or dark contexts.
 
 ### API Endpoint (Frontend → Backend)
 ```
