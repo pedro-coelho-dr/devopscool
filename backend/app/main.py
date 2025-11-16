@@ -7,9 +7,9 @@ import json
 # -----------------------------------------------------
 # Configuration
 # -----------------------------------------------------
-DEBUG_MODE = True  # Toggle this flag to enable/disable debug logging
+DEBUG_MODE = False  # Toggle this flag to enable/disable debug logging
 
-app = FastAPI(title="DevOpsCool", debug=DEBUG_MODE)
+app = FastAPI(title="DevOpsCool", debug=DEBUG_MODE, docs_url=None, redoc_url=None, openapi_url=None)
 
 origins = [
     "http://localhost:5173",
