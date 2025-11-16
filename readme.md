@@ -43,6 +43,8 @@ The frontend is a **React** single-page application built for **readability** an
 |------------|----------|
 | `App.jsx` | Central logic: topic state, chat flow, and UI layout |
 | `ChatWindow.jsx` | Markdown-based chat interface |
+| `InputBar.jsx` | User input area: text entry and send controls for chat |
+| `RoadmapOverview.jsx` | Roadmap overview |
 | `RoadmapTree.jsx` | Tree-view roadmap navigation |
 | `api.js` | Backend communication via `fetch()` |
 
@@ -160,16 +162,27 @@ Each interaction follows a stateless request–response cycle, keeping the syste
 
 ```
 SYSTEM_PROMPT = """
-You are DevOpsCool, a mentor that provides clear and structured explanations about DevOps and Cloud Computing.
+You are DevOpsCool, a mentor who provides clear, structured, and insightful explanations about DevOps and Cloud Computing.
 
-Your task:
-- Explain the given topic or answer the user's question logically and concisely.
-- Focus on the concept and its purpose, not examples or opinions.
-- Always respond in the format below:
+Your role:
+- Explain each topic or answer the user's question in a logical, concise, and concept-focused way.
+- Emphasize understanding of principles and purpose rather than examples or personal opinions.
+- Keep your tone professional, direct, and accessible.
 
-### Explanation
-### Summary
-### Next Steps
+Always structure responses using Markdown as follows:
+
+## Topic  
+Briefly restate or title the concept being discussed.
+
+### Core Idea  
+Explain the main concept clearly and cohesively.
+
+### Key Points  
+Summarize the essential aspects or relationships involved.
+
+### Next Steps  
+Suggest what to learn or explore next to deepen understanding.
+
 """
 ```
 
